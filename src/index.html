@@ -3,7 +3,61 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>API Practice</title>
   </head>
-  <body></body>
+  <body>
+    <form>
+      <p>
+        <label for="search">Search</label>
+        <input type="text" id="search" name="search" />
+      </p>
+      <p>
+        <button id="submit">Submit</button>
+      </p>
+    </form>
+    >
+    <img src="#" />
+    <script>
+      const api_key = '';
+      const img = document.querySelector('img');
+      const fetchImage = (searchTerm = 'animals') => {
+        fetch(
+          `https://api.giphy.com/v1/gifs/translate?api_key=${api_key}=${searchTerm}`,
+          { mode: 'cors' }
+        )
+          .then(function (response) {
+            //console.log(response.json());
+            return response.json();
+          })
+          .then(function (response) {
+            // const status = response.meta.status
+            // if (status === 200)
+            console.log(response);
+            img.src = response.data.images.original.url;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+      fetchImage();
+
+      //£¢ to get an empty search (but the catch grabs it)
+
+      const searchBox = document.querySelector('#search');
+
+      btn = document.querySelector('#submit');
+      btn.addEventListener('click', (event) => {
+        event.preventDefault();
+        const searchTerm = searchBox.value === '' ? null : searchBox.value;
+        if (searchBox.value === '' || searchBox.value === null) {
+          fetchImage();
+        } else {
+          fetchImage(searchBox.value);
+        }
+      });
+
+      //img.src =
+      //  'https://t4.ftcdn.net/jpg/05/66/10/33/360_F_566103345_a7RD2t4GJcehkNttH5hNs4oAowG93aRA.jpg';
+    </script>
+  </body>
 </html>
