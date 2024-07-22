@@ -20,7 +20,7 @@
     <script>
       const api_key = '';
       const img = document.querySelector('img');
-      const fetchImage = (searchTerm = 'animals') => {
+      const fetchImagePromise = (searchTerm = 'animals') => {
         fetch(
           `https://api.giphy.com/v1/gifs/translate?api_key=${api_key}=${searchTerm}`,
           { mode: 'cors' }
@@ -39,7 +39,27 @@
             console.log(err);
           });
       };
-      fetchImage();
+
+      const fetchImageAsync = async (searchTerm) => {
+        const response = await fetch(
+          `https://api.giphy.com/v1/gifs/translate?api_key=${api_key}&s=${searchTerm}`,
+          { mode: 'cors' }
+        );
+        const jsonResponse = await response.json();
+
+        console.log(jsonResponse);
+        try {
+          img.src = jsonResponse.data.images.original.url;
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      // fetchImagePromise()
+
+      fetchImageAsync().catch((err) => {
+        console.log(err);
+      });
 
       //£¢ to get an empty search (but the catch grabs it)
 
@@ -50,14 +70,14 @@
         event.preventDefault();
         const searchTerm = searchBox.value === '' ? null : searchBox.value;
         if (searchBox.value === '' || searchBox.value === null) {
-          fetchImage();
+          fetchImageAsync();
         } else {
-          fetchImage(searchBox.value);
+          fetchImageAsync(searchBox.value);
         }
       });
 
-      //img.src =
-      //  'https://t4.ftcdn.net/jpg/05/66/10/33/360_F_566103345_a7RD2t4GJcehkNttH5hNs4oAowG93aRA.jpg';
+      // img.src =
+      //   'https://t4.ftcdn.net/jpg/05/66/10/33/360_F_566103345_a7RD2t4GJcehkNttH5hNs4oAowG93aRA.jpg';
     </script>
   </body>
 </html>
